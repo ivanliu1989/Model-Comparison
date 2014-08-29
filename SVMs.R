@@ -1,0 +1,12 @@
+setwd('C:\\Users\\Ivan.Liuyanfeng\\Desktop\\Data_Mining_Work_Space\\Model-Comparison')
+require(ggplot2)
+list.files('data')
+df <- read.csv('data/df.csv')
+head(df)(
+png('df.png')
+ggplot(data = df,aes(x=X,y=Y,color=Label))+geom_point()
+dev.off()
+logit.fit <- glm(Label~.,family=binomial(link='logit'),data=df)
+logit.prediction <- ifelse(predict(logit.fit)>0,1,0)
+mean(with(df,logit.prediction==Label))
+mean(with(df,0==Label))
