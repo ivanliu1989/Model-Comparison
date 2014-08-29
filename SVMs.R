@@ -26,4 +26,8 @@ head(df)
 require(reshape2)
 predictions <- melt(df,id.vars=c('X','Y'))
 head(predictions)
+png('predictions.png',height=800,width=600)
 ggplot(predictions, aes(X,Y, color=factor(value)))+geom_point()+facet_grid(variable~.)
+dev.off()
+
+# Kernel trick - linear, polynomial, radial, sigmoid
