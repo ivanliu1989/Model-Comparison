@@ -48,3 +48,15 @@ knn.fit <- knn(train.x, test.x, train.y, k = 50)
 predictions <- as.numeric(as.character(knn.fit))
 mse <- mean(predictions != test.y)
 mse
+
+performance <- data.frame()
+for (k in seq(5, 50, by = 5))
+{
+    knn.fit <- knn(train.x, test.x, train.y, k = k)
+    predictions <- as.numeric(as.character(knn.fit))
+    mse <- mean(predictions != test.y)
+    performance <- rbind(performance, data.frame(K = k, MSE = mse))
+}
+best.k <- with(performance, K[which(MSE == min(MSE))])
+best.mse <- with(subset(performance, K == best.k), MSE)
+best.mse
