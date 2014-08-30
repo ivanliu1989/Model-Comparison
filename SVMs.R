@@ -105,3 +105,16 @@ radial.cost4.svm.fit <- svm(Label ~ X + Y,
                             kernel = 'radial',
                             cost = 4)
 with(df, mean(Label == ifelse(predict(radial.cost4.svm.fit) > 0, 1, 0)))
+#plot
+df <- df[, c('X', 'Y', 'Label')]
+df <- cbind(df,
+            data.frame(Cost1SVM = ifelse(predict(radial.cost1.svm.fit) > 0, 1, 0),
+                       Cost2SVM = ifelse(predict(radial.cost2.svm.fit) > 0, 1, 0),
+                       Cost3SVM = ifelse(predict(radial.cost3.svm.fit) > 0, 1, 0),
+                       Cost4SVM = ifelse(predict(radial.cost4.svm.fit) > 0, 1, 0)))
+predictions <- melt(df, id.vars = c('X', 'Y'))
+png('cost_hyperparameter.png',height=600,width=800)
+ggplot(predictions, aes(x = X, y = Y, color = factor(value))) +
+    geom_point() +
+    facet_grid(variable ~ .)
+dev.off()
