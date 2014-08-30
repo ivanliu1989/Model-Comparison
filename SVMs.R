@@ -53,7 +53,7 @@ png('kernel.png',height = 600,width=800)
 ggplot(predictions, aes(X,Y,color=factor(value)))+geom_point()+facet_grid(variable~.)
 dev.off()
 
-# tuning hyperparameter
+# tuning degree hyperparameter
 polynomial.degree3.svm.fit <- svm(Label~X+Y, data=df,kernel = 'polynomial', degree=3)
 with(df, mean(Label != ifelse(predict(polynomial.degree3.svm.fit)>0,1,0)))
 
@@ -65,3 +65,43 @@ with(df, mean(Label != ifelse(predict(polynomial.degree10.svm.fit)>0,1,0)))
 
 polynomial.degree12.svm.fit <- svm(Label~X+Y, data=df,kernel = 'polynomial', degree=12)
 with(df, mean(Label != ifelse(predict(polynomial.degree12.svm.fit)>0,1,0)))
+
+# plot 
+df <- df[,c('X','Y','Label')]
+df <- cbind(df, data.frame(Degree3SVM = ifelse(predict(polynomial.degree3.svm.fit) > 0,
+                                               1,
+                                               0),
+                           Degree5SVM = ifelse(predict(polynomial.degree5.svm.fit) > 0,
+                                               1,
+                                               0),
+                           Degree10SVM = ifelse(predict(polynomial.degree10.svm.fit) > 0,
+                                                1,
+                                                0),
+                           Degree12SVM = ifelse(predict(polynomial.degree12.svm.fit) > 0,
+                                                1,
+                                                0)))
+predictions <- melt(df,id.vars = c('X','Y'))
+png('degree_hyperparameter.png',height=600,width=800)
+ggplot(predictions, aes(X,Y,color=factor(value)))+geom_point()+facet_grid(variable~.)
+dev.off()
+
+# tuning cost hyperparameter
+radial.cost1.svm.fit <- svm(Label ~ X + Y,
+                            data = df,
+                            kernel = 'radial',
+                            cost = 1)
+with(df, mean(Label == ifelse(predict(radial.cost1.svm.fit) > 0, 1, 0)))
+radial.cost2.svm.fit <- svm(Label ~ X + Y,
+                            data = df,kernel = 'radial',
+                            cost = 2)
+with(df, mean(Label == ifelse(predict(radial.cost2.svm.fit) > 0, 1, 0)))
+radial.cost3.svm.fit <- svm(Label ~ X + Y,
+                            data = df,
+                            kernel = 'radial',
+                            cost = 3)
+with(df, mean(Label == ifelse(predict(radial.cost3.svm.fit) > 0, 1, 0)))
+radial.cost4.svm.fit <- svm(Label ~ X + Y,
+                            data = df,
+                            kernel = 'radial',
+                            cost = 4)
+with(df, mean(Label == ifelse(predict(radial.cost4.svm.fit) > 0, 1, 0)))
