@@ -43,3 +43,12 @@ with(df,mean(Label== ifelse(predict(radial.svm.fit)>0,1,0)))
 
 sigmoid.svm.fit <- svm(Label~X+Y, data=df, kernel='sigmoid')
 with(df,mean(Label== ifelse(predict(sigmoid.svm.fit)>0,1,0)))
+
+df<- cbind(df,data.frame(LinearSVM = ifelse(predict(linear.svm.fit) > 0, 1, 0),
+                         PolynomialSVM = ifelse(predict(polynomial.svm.fit) > 0, 1, 0),
+                         RadialSVM = ifelse(predict(radial.svm.fit) > 0, 1, 0),
+                         SigmoidSVM = ifelse(predict(sigmoid.svm.fit) > 0, 1, 0)))
+predictions <- melt(df, id.vars = c('X','Y'))
+png('kernel.png',height = 600,width=800)
+ggplot(predictions, aes(X,Y,color=factor(value)))+geom_point()+facet_grid(variable~.)
+dev.off()
