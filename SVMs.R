@@ -31,3 +31,15 @@ ggplot(predictions, aes(X,Y, color=factor(value)))+geom_point()+facet_grid(varia
 dev.off()
 
 # Kernel trick - linear, polynomial, radial, sigmoid
+df <- df[,c('X','Y','Label')]
+linear.svm.fit <- svm(Label~X+Y, data=df, kernel='linear')
+with(df,mean(Label== ifelse(predict(linear.svm.fit)>0,1,0)))
+
+polynomial.svm.fit <- svm(Label~X+Y, data=df, kernel='polynomial')
+with(df,mean(Label== ifelse(predict(polynomial.svm.fit)>0,1,0)))
+
+radial.svm.fit <- svm(Label~X+Y, data=df, kernel='radial')
+with(df,mean(Label== ifelse(predict(radial.svm.fit)>0,1,0)))
+
+sigmoid.svm.fit <- svm(Label~X+Y, data=df, kernel='sigmoid')
+with(df,mean(Label== ifelse(predict(sigmoid.svm.fit)>0,1,0)))
