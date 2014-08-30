@@ -27,3 +27,12 @@ ggplot(performance, aes(x = Lambda, y = MSE)) +
 dev.off()
 # best point
 best.lambda <- with(performance, max(Lambda[which(MSE == min(MSE))]))
+mse <- with(subset(performance, Lambda == best.lambda), MSE)
+mse
+# SVMs
+library('e1071')
+linear.svm.fit <- svm(train.x, train.y, kernel = 'linear')
+predictions <- predict(linear.svm.fit, test.x)
+predictions <- as.numeric(predictions > 0)
+mse <- mean(predictions != test.y)
+mse
