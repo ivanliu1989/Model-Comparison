@@ -36,3 +36,15 @@ predictions <- predict(linear.svm.fit, test.x)
 predictions <- as.numeric(predictions > 0)
 mse <- mean(predictions != test.y)
 mse
+radial.svm.fit <- svm(train.x, train.y, kernel = 'radial')
+predictions <- predict(radial.svm.fit, test.x)
+predictions <- as.numeric(predictions > 0)
+mse <- mean(predictions != test.y)
+mse
+
+# kNN
+library('class')
+knn.fit <- knn(train.x, test.x, train.y, k = 50)
+predictions <- as.numeric(as.character(knn.fit))
+mse <- mean(predictions != test.y)
+mse
