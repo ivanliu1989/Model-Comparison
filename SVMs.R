@@ -139,3 +139,16 @@ sigmoid.gamma4.svm.fit <- svm(Label ~ X + Y,
                               kernel = 'sigmoid',
                               gamma = 4)
 with(df, mean(Label == ifelse(predict(sigmoid.gamma4.svm.fit) > 0, 1, 0)))
+#plot
+df <- df[, c('X', 'Y', 'Label')]
+df <- cbind(df,
+            data.frame(Gamma1SVM = ifelse(predict(sigmoid.gamma1.svm.fit) > 0, 1, 0),
+                       Gamma2SVM = ifelse(predict(sigmoid.gamma2.svm.fit) > 0, 1, 0),
+                       Gamma3SVM = ifelse(predict(sigmoid.gamma3.svm.fit) > 0, 1, 0),
+                       Gamma4SVM = ifelse(predict(sigmoid.gamma4.svm.fit) > 0, 1, 0)))
+predictions <- melt(df, id.vars = c('X', 'Y'))
+png('gamma.png',height=600,width=800)
+ggplot(predictions, aes(x = X, y = Y, color = factor(value))) +
+    geom_point() +
+    facet_grid(variable ~ .)
+dev.off()
