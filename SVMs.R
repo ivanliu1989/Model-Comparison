@@ -118,3 +118,24 @@ ggplot(predictions, aes(x = X, y = Y, color = factor(value))) +
     geom_point() +
     facet_grid(variable ~ .)
 dev.off()
+
+# gamma hyperparameter
+sigmoid.gamma1.svm.fit <- svm(Label ~ X + Y,
+                              data = df,
+                              kernel = 'sigmoid',
+                              gamma = 1)
+with(df, mean(Label == ifelse(predict(sigmoid.gamma1.svm.fit) > 0, 1, 0)))
+sigmoid.gamma2.svm.fit <- svm(Label ~ X + Y,
+                              data = df,
+                              kernel = 'sigmoid',gamma = 2)
+with(df, mean(Label == ifelse(predict(sigmoid.gamma2.svm.fit) > 0, 1, 0)))
+sigmoid.gamma3.svm.fit <- svm(Label ~ X + Y,
+                              data = df,
+                              kernel = 'sigmoid',
+                              gamma = 3)
+with(df, mean(Label == ifelse(predict(sigmoid.gamma3.svm.fit) > 0, 1, 0)))
+sigmoid.gamma4.svm.fit <- svm(Label ~ X + Y,
+                              data = df,
+                              kernel = 'sigmoid',
+                              gamma = 4)
+with(df, mean(Label == ifelse(predict(sigmoid.gamma4.svm.fit) > 0, 1, 0)))
