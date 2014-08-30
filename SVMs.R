@@ -52,3 +52,16 @@ predictions <- melt(df, id.vars = c('X','Y'))
 png('kernel.png',height = 600,width=800)
 ggplot(predictions, aes(X,Y,color=factor(value)))+geom_point()+facet_grid(variable~.)
 dev.off()
+
+# tuning hyperparameter
+polynomial.degree3.svm.fit <- svm(Label~X+Y, data=df,kernel = 'polynomial', degree=3)
+with(df, mean(Label != ifelse(predict(polynomial.degree3.svm.fit)>0,1,0)))
+
+polynomial.degree5.svm.fit <- svm(Label~X+Y, data=df,kernel = 'polynomial', degree=5)
+with(df, mean(Label != ifelse(predict(polynomial.degree5.svm.fit)>0,1,0)))
+
+polynomial.degree10.svm.fit <- svm(Label~X+Y, data=df,kernel = 'polynomial', degree=10)
+with(df, mean(Label != ifelse(predict(polynomial.degree10.svm.fit)>0,1,0)))
+
+polynomial.degree12.svm.fit <- svm(Label~X+Y, data=df,kernel = 'polynomial', degree=12)
+with(df, mean(Label != ifelse(predict(polynomial.degree12.svm.fit)>0,1,0)))
